@@ -128,14 +128,6 @@
   h2.con-ico .ico svg{width:26px;height:26px}
   .otras-vistas{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:22px;padding-top:14px;border-top:1px solid var(--linea)}
   .link{border:0;background:none;color:var(--morado-2);font-weight:700;font-size:14px;padding:0;cursor:pointer;text-align:left}
-  .tipo-btn .ico.con-foto{position:relative;width:100%;height:92px;border-radius:12px;overflow:hidden;margin-bottom:6px}
-  .tipo-btn .ico.con-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .ref{margin:4px 0 14px;max-width:340px}
-  .ref-img{position:relative;display:flex;align-items:center;justify-content:center;height:170px;border-radius:14px;overflow:hidden;background:#F1EAF9;color:var(--morado)}
-  .ref-img svg{width:48px;height:48px}
-  .ref-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .cred{font-size:11px;color:var(--suave);margin-top:5px}
-  .cred a{color:var(--suave)}
 </style>
 </head>
 <body>
@@ -456,108 +448,6 @@ function calificador(titulo, tipoN, marcaN){
   return res.join(' ');
 }
 
-// ===== Fotos de referencia por tipo (Wikimedia Commons, licencias libres; créditos al pie de cada foto) =====
-var FOTOS = {
-  "pantalla": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/IPhonedriod.Repairservice%E2%80%99s_02.jpg/500px-IPhonedriod.Repairservice%E2%80%99s_02.jpg",
-  "Phonerepair1",
-  "CC BY-SA 4.0",
-  "IPhonedriod.Repairservice%E2%80%99s_02.jpg"
-  ],
-  "bateria": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Samsung_smartphone_battery%2C_Hillegersberg%2C_Rotterdam_%282022%29_01.jpg/500px-Samsung_smartphone_battery%2C_Hillegersberg%2C_Rotterdam_%282022%29_01.jpg",
-  "Donald Trung Quoc Don",
-  "CC BY-SA 4.0",
-  "Samsung_smartphone_battery,_Hillegersberg,_Rotterdam_(2022)_01.jpg"
-  ],
-  "carga": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/USB_Female_Type_C_Connector_%2846356532451%29.jpg/500px-USB_Female_Type_C_Connector_%2846356532451%29.jpg",
-  "SparkFun Electronics",
-  "CC BY 2.0",
-  "USB_Female_Type_C_Connector_(46356532451).jpg"
-  ],
-  "tapa": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/IDEOS_back_side_20110618.jpg/500px-IDEOS_back_side_20110618.jpg",
-  "Jkr2255",
-  "CC BY-SA 3.0",
-  "IDEOS_back_side_20110618.jpg"
-  ],
-  "camara": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/SAMSUNG_Galaxy_S22_Ultra_REAR_CAMERA_MODULES.jpg/500px-SAMSUNG_Galaxy_S22_Ultra_REAR_CAMERA_MODULES.jpg",
-  "Dinkun Chen",
-  "CC BY-SA 4.0",
-  "SAMSUNG_Galaxy_S22_Ultra_REAR_CAMERA_MODULES.jpg"
-  ],
-  "frontal": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/LG_P710_Optimus_L7_II_-_CCD_front-facing_camera_with_connector-7048.jpg/500px-LG_P710_Optimus_L7_II_-_CCD_front-facing_camera_with_connector-7048.jpg",
-  "Raimond Spekking",
-  "CC BY-SA 4.0",
-  "LG_P710_Optimus_L7_II_-_CCD_front-facing_camera_with_connector-7048.jpg"
-  ],
-  "lente": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Mi_10_Ultra_camera_lens_group.jpg/500px-Mi_10_Ultra_camera_lens_group.jpg",
-  "人工知能",
-  "CC BY-SA 4.0",
-  "Mi_10_Ultra_camera_lens_group.jpg"
-  ],
-  "huella": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/Moto_E5_Plus_Sensor_Camera.png/500px-Moto_E5_Plus_Sensor_Camera.png",
-  "JulianVilla26",
-  "CC BY-SA 4.0",
-  "Moto_E5_Plus_Sensor_Camera.png"
-  ],
-  "nfc": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Phone_wireless_charge.jpg/500px-Phone_wireless_charge.jpg",
-  "Seawhelan",
-  "CC BY-SA 4.0",
-  "Phone_wireless_charge.jpg"
-  ],
-  "flex": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Mechanism1.jpg/500px-Mechanism1.jpg",
-  "Антракт",
-  "CC BY-SA 4.0",
-  "Mechanism1.jpg"
-  ],
-  "home": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/IPhone_5S_home_button.png/500px-IPhone_5S_home_button.png",
-  "Kelvinsong",
-  "CC BY 3.0",
-  "IPhone_5S_home_button.png"
-  ],
-  "nand": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/VLI_VL751_Chip_Image_%285976872359%29.jpg/500px-VLI_VL751_Chip_Image_%285976872359%29.jpg",
-  "VIA Gallery",
-  "CC BY 2.0",
-  "VLI_VL751_Chip_Image_(5976872359).jpg"
-  ],
-  "carcasa": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Disassembled_SONY_XPERIA.JPG/500px-Disassembled_SONY_XPERIA.JPG",
-  "Dmitry G",
-  "CC BY-SA 3.0",
-  "Disassembled_SONY_XPERIA.JPG"
-  ],
-  "glass": [
-  "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Samsung_Galaxy_S2_shattered_screen.jpg/500px-Samsung_Galaxy_S2_shattered_screen.jpg",
-  "Ashwin Kumar",
-  "CC BY-SA 2.0",
-  "Samsung_Galaxy_S2_shattered_screen.jpg"
-  ]
-  };
-function fotoTipo(k){
-  if (FOTOS[k]) return FOTOS[k];
-  if (k === 'main' || k === 'signal' || k === 'flexlcd' || k === 'power' || k === 'faceid') return FOTOS.flex;
-  return null;
-}
-/** Foto con el ícono detrás: si la foto no carga, queda el ícono */
-function fotoHtml(k, clase){
-  var f = fotoTipo(k);
-  return '<span class="' + clase + '">' + iconoTipo(k) + (f ? '<img src="' + f[0] + '" alt="" loading="lazy" onerror="this.remove()">' : '') + '</span>';
-}
-function creditoFoto(k){
-  var f = fotoTipo(k); if (!f) return '';
-  return '<div class="cred">Imagen de referencia · Foto: <a href="https://commons.wikimedia.org/wiki/File:' + f[3] + '" target="_blank" rel="noopener">' + esc(f[1]) + '</a>, ' + esc(f[2]) + '</div>';
-}
-
 // Datos: marcas = [{ n: marca, b: [{ t: tabla, p: [etiquetas de precio], i: [[modelo, [precios], nota, nuevo]] }] }]
 var marcas = [], items = [], porId = {};
 var vista = { ruta: [], q: '' };
@@ -684,7 +574,7 @@ function pintarModelo(app, m, md){
     '<h2>' + esc(md.nombre) + '</h2><p class="sub">¿Qué repuesto necesitas?</p>' +
     '<div class="tipos">' + md.lista.map(function(tp){
       var p = desde(tp.items), nuevos = tp.items.some(function(x){ return x.nuevo; });
-      return '<button class="tipo-btn" data-ir="' + m.s + '/m/' + md.s + '/' + tp.k + '">' + fotoHtml(tp.k, 'ico' + (fotoTipo(tp.k) ? ' con-foto' : '')) +
+      return '<button class="tipo-btn" data-ir="' + m.s + '/m/' + md.s + '/' + tp.k + '"><span class="ico">' + iconoTipo(tp.k) + '</span>' +
         '<b>' + esc(tp.n) + '</b><span>' + (p ? 'desde ' + dinero(p) : 'Consultar') + (tp.items.length > 1 ? ' · ' + tp.items.length + ' opciones' : '') + '</span>' +
         (nuevos ? '<i class="nuevo">NUEVO</i>' : '') + '</button>';
     }).join('') + '</div>';
@@ -694,7 +584,6 @@ function pintarTipo(app, m, md, tp){
   var lista = tp.items.slice().sort(function(a, b){ return (a.precio || 1e9) - (b.precio || 1e9); });
   app.innerHTML = migas([[m.n, m.s], [md.nombre, m.s + '/m/' + md.s], [tp.n, '']]) + regresar(m.s + '/m/' + md.s, 'Ver otros repuestos del ' + md.nombre) +
     '<h2 class="con-ico"><span class="ico">' + iconoTipo(tp.k) + '</span>' + esc(tp.n) + ' · ' + esc(md.nombre) + '</h2>' +
-    (fotoTipo(tp.k) ? '<figure class="ref">' + fotoHtml(tp.k, 'ref-img') + creditoFoto(tp.k) + '</figure>' : '') +
     '<p class="sub">' + lista.length + (lista.length === 1 ? ' opción' : ' opciones') + ' · precios de mayoreo</p>' +
     '<section class="grupo">' + lista.map(function(x){
       var cal = calificador(x.tabla, tp.n, m.n);
