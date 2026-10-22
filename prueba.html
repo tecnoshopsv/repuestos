@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Repuestos para talleres · TECNOSHOPSV</title>
+<meta name="description" content="Catálogo de repuestos para talleres: pantallas, baterías y más, con precios de mayoreo.">
+<meta name="theme-color" content="#4B1F7A">
+<link rel="icon" type="image/png" sizes="32x32" href="https://catalogo.tecnoshopsv.com/favicon-32.png">
+<link rel="apple-touch-icon" href="https://catalogo.tecnoshopsv.com/icono-180.png">
+<style>
+  :root{
+    --morado:#4B1F7A; --morado-2:#6A2FA8; --amarillo:#FFC52E;
+    --fondo:#F5F3F8; --tarjeta:#FFFFFF; --texto:#1E1A24; --suave:#6B6475; --linea:#E6E1EC;
+    --verde:#0E6B4E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--fondo);color:var(--texto);
+    font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+  button{font:inherit}
+  header{background:var(--morado);color:#fff;padding:14px 16px 16px}
+  .cab{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:760px;margin:0 auto}
+  .marca{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+  .marca img{width:44px;height:44px;border-radius:10px;background:#fff1}
+  .marca b{display:block;font-size:18px;letter-spacing:.2px}
+  .marca span{font-size:12px;opacity:.85}
+  .ir-cat{color:#fff;font-size:13px;border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}
+  .barra{position:sticky;top:0;z-index:5;background:var(--fondo);padding:10px 16px 8px;border-bottom:1px solid var(--linea)}
+  .barra .dentro{max-width:760px;margin:0 auto}
+  #q{width:100%;padding:12px 14px;border:1px solid var(--linea);border-radius:12px;font-size:16px;background:#fff}
+  .chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;border:1px solid var(--linea);background:#fff;color:var(--texto);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+  .chip.on{background:var(--morado);border-color:var(--morado);color:#fff}
+  .chip .n{opacity:.7;margin-left:4px;font-size:12px;font-weight:500}
+  main{max-width:760px;margin:0 auto;padding:12px 16px 120px}
+  .migas{font-size:13px;color:var(--suave);margin:4px 0 10px}
+  .migas button{border:0;background:none;color:var(--morado);font-weight:700;padding:0;cursor:pointer;font-size:13px}
+  h2{font-size:20px;margin:6px 0 4px}
+  .sub{color:var(--suave);font-size:13px;margin:0 0 14px}
+  .marcas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .marca-btn{border:0;border-radius:18px;padding:22px 12px;color:#fff;cursor:pointer;text-align:center;
+    background:linear-gradient(145deg,var(--morado-2),var(--morado));box-shadow:0 6px 16px rgba(75,31,122,.22)}
+  .marca-btn:nth-child(even){background:linear-gradient(145deg,#2C2533,#15121A)}
+  .marca-btn .nom{display:block;font-size:22px;font-weight:800}
+  .marca-btn .uni{display:inline-block;margin-top:8px;background:var(--amarillo);color:#3a2a00;font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px}
+  .modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .modelo-btn{border:1px solid var(--linea);background:#fff;border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer}
+  .modelo-btn b{display:block;font-size:15px}
+  .modelo-btn span{font-size:12px;color:var(--suave)}
+  .modelo-btn:active,.marca-btn:active{transform:scale(.98)}
+  .grupo{background:#fff;border:1px solid var(--linea);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  .grupo-cab{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#FBF9FD;border-bottom:1px solid var(--linea)}
+  .grupo-cab h3{margin:0;font-size:16px}
+  .grupo-cab span{font-size:12px;color:var(--suave)}
+  .rep{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:11px 14px;border-top:1px solid var(--linea);align-items:center}
+  .rep:first-of-type{border-top:0}
+  .rep .t{font-weight:700}
+  .cal{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:#F1EAF9;color:var(--morado);margin-left:6px;vertical-align:1px}
+  .rep .o{font-size:12px;color:var(--suave);grid-column:1}
+  .rep .p{font-size:18px;font-weight:800;color:var(--morado);text-align:right;white-space:nowrap}
+  .rep .acc{grid-column:1 / -1;display:flex;gap:8px;margin-top:6px}
+  .btn{border:0;border-radius:10px;padding:8px 12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .btn-add{background:var(--morado);color:#fff}
+  .btn-wa{background:#fff;color:var(--verde);border:1px solid #BFE3D2}
+  .paso{display:inline-flex;align-items:center;gap:8px;background:#F1EAF9;border-radius:10px;padding:4px}
+  .paso button{border:0;background:#fff;color:var(--morado);width:30px;height:30px;border-radius:8px;font-size:18px;font-weight:800;cursor:pointer}
+  .paso span{font-size:13px;font-weight:700;color:var(--morado);min-width:70px;text-align:center}
+  .vacio{background:#fff;border:1px dashed var(--linea);border-radius:14px;padding:22px;text-align:center;color:var(--suave)}
+  .info{margin-top:18px;background:#fff;border:1px solid var(--linea);border-radius:14px;padding:14px;font-size:13px;color:var(--suave)}
+  .info b{color:var(--texto)}
+  .barra-pedido{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--morado);color:#fff;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -4px 16px rgba(0,0,0,.15)}
+  .barra-pedido[hidden]{display:none}
+  .barra-pedido b{font-size:16px}
+  .barra-pedido button{border:0;background:var(--amarillo);color:#3a2a00;font-weight:800;border-radius:10px;padding:10px 14px;cursor:pointer}
+  .fondo-modal{position:fixed;inset:0;background:rgba(20,10,30,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+  .fondo-modal[hidden]{display:none}
+  .modal{background:#fff;width:100%;max-width:560px;max-height:88vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column}
+  .modal-cab{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--linea)}
+  .modal-cab h3{margin:0;font-size:17px}
+  .cerrar{border:0;background:#F1EAF9;color:var(--morado);width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer}
+  .modal-cuerpo{overflow:auto;padding:4px 16px}
+  .linea{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 0;border-bottom:1px solid var(--linea)}
+  .linea .t{font-weight:600;font-size:14px}
+  .linea .s{font-size:12px;color:var(--suave)}
+  .modal-pie{padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--linea)}
+  .modal-pie input{width:100%;padding:10px 12px;border:1px solid var(--linea);border-radius:10px;font-size:15px;margin-bottom:8px}
+  .total{display:flex;justify-content:space-between;font-weight:800;font-size:16px;margin-bottom:10px}
+  .enviar{width:100%;border:0;background:#1FA855;color:#fff;font-weight:800;font-size:16px;border-radius:12px;padding:13px;cursor:pointer}
+  .vaciar{width:100%;border:0;background:none;color:var(--suave);text-decoration:underline;padding:8px;cursor:pointer;font-size:13px}
+  .estado{font-size:12px;color:var(--suave);text-align:center;margin-top:16px}
+  .toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(140px);background:var(--texto);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;transition:transform .25s;max-width:90vw;text-align:center}
+  .toast.ver{transform:translateX(-50%) translateY(0)}
+  .marcas{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .marca-btn{padding:18px 10px}
+  .marca-btn .nom{font-size:18px;line-height:1.2}
+  .tablas{display:grid;gap:10px}
+  .tabla-btn{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--linea);background:#fff;border-radius:14px;padding:14px;text-align:left;cursor:pointer}
+  .tabla-btn b{font-size:15px}
+  .tabla-btn span{font-size:12px;color:var(--suave);white-space:nowrap}
+  .tabla-btn .flecha{color:var(--morado);font-size:20px;font-weight:700}
+  .nuevo{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.4px;padding:2px 6px;border-radius:5px;background:var(--amarillo);color:#3a2a00;margin-left:6px;vertical-align:1px}
+  .rep .pp{font-size:13px;font-weight:700;color:var(--morado);text-align:right}
+  .rep .pp div{white-space:nowrap}
+  .pronto{display:inline-block;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:#EEE;color:#555}
+  .regresar{display:inline-flex;align-items:center;gap:4px;margin:4px 0 8px;border:1px solid var(--linea);background:#fff;color:var(--morado);font-weight:700;font-size:14px;border-radius:999px;padding:8px 14px 8px 10px;cursor:pointer}
+  .fam{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--suave);margin:18px 0 8px}
+  .mods{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+  .mod-btn{border:1px solid var(--linea);background:#fff;border-radius:12px;padding:12px 10px;text-align:left;cursor:pointer;min-height:58px}
+  .mod-btn b{display:block;font-size:15px;line-height:1.2}
+  .mod-btn span{font-size:11.5px;color:var(--suave)}
+  .mod-btn:active,.tipo-btn:active,.tabla-btn:active{transform:scale(.98)}
+  .nuevo-p{font-style:normal;font-weight:800;color:#8a6200}
+  .tipos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .tipo-btn{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;border:1px solid var(--linea);background:#fff;border-radius:16px;padding:16px 10px 14px;cursor:pointer}
+  .tipo-btn .ico{width:54px;height:54px;border-radius:14px;background:#F1EAF9;color:var(--morado);display:flex;align-items:center;justify-content:center;margin-bottom:4px}
+  .tipo-btn .ico svg{width:32px;height:32px}
+  .tipo-btn b{font-size:15px;line-height:1.2}
+  .tipo-btn span{font-size:12px;color:var(--suave)}
+  .tipo-btn .nuevo{position:absolute;top:8px;right:8px;margin:0}
+  .tabla-btn{justify-content:flex-start}
+  .tabla-btn > div{flex:1}
+  .tabla-btn .ico{flex:0 0 40px;width:40px;height:40px;border-radius:11px;background:#F1EAF9;color:var(--morado);display:flex;align-items:center;justify-content:center}
+  .tabla-btn .ico svg{width:24px;height:24px}
+  h2.con-ico{display:flex;align-items:center;gap:10px}
+  h2.con-ico .ico{flex:0 0 40px;width:40px;height:40px;border-radius:11px;background:#F1EAF9;color:var(--morado);display:flex;align-items:center;justify-content:center}
+  h2.con-ico .ico svg{width:26px;height:26px}
+  .otras-vistas{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:22px;padding-top:14px;border-top:1px solid var(--linea)}
+  .link{border:0;background:none;color:var(--morado-2);font-weight:700;font-size:14px;padding:0;cursor:pointer;text-align:left}
+</style>
+</head>
+<body>
+<header>
+  <div class="cab">
+    <a class="marca" href="/"><img src="https://catalogo.tecnoshopsv.com/icono-180.png" alt=""><div><b>TecnoShopSV Repuestos</b><span>Precios para talleres · mayoreo</span></div></a>
+    <a class="ir-cat" href="https://catalogo.tecnoshopsv.com/">Ver equipos</a>
+  </div>
+</header>
+<div class="barra"><div class="dentro">
+  <input id="q" type="search" placeholder="Busca: pantalla 13 pro, batería A54…" autocomplete="off">
+  <div class="chips" id="chips"></div>
+</div></div>
+<main id="app"><div class="vacio">Cargando repuestos…</div></main>
+
+<div class="barra-pedido" id="barraPedido" hidden>
+  <div>Tu pedido: <b id="bpN">0</b> · <b id="bpT">$0.00</b></div>
+  <button id="verPedido" type="button">Ver y enviar</button>
+</div>
+<div class="fondo-modal" id="modalPedido" hidden><div class="modal" role="dialog" aria-labelledby="pedTit">
+  <div class="modal-cab"><h3 id="pedTit">Tu pedido de repuestos</h3><button class="cerrar" id="cerrarPedido" aria-label="Cerrar">×</button></div>
+  <div class="modal-cuerpo" id="pedLista"></div>
+  <div class="modal-pie">
+    <input id="pedTaller" maxlength="60" placeholder="Nombre de tu taller (opcional)">
+    <div class="total"><span>Total</span><span id="pedTotal">$0.00</span></div>
+    <button class="enviar" id="enviarPedido" type="button">Enviar pedido por WhatsApp</button>
+    <button class="vaciar" id="vaciarPedido" type="button">Vaciar pedido</button>
+  </div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbweF6GVeLUBF6zIiUuPS6CsVSzKyabDV1kHrXgehpmQKnXVa40yqGPw6ltA3fjebQCLxw/exec';
+var WHATSAPP = '50370012323';
+var GUARDA = 'tsv_rep2', GUARDA_PED = 'tsv_rep_pedido2', GUARDA_TALLER = 'tsv_rep_taller';
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function dinero(n){ n = Number(n || 0); return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function norm(s){ return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
+function slug(s){ return norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function num(s){ var n = parseFloat(String(s == null ? '' : s).replace(/[^0-9.]/g, '')); return isNaN(n) ? 0 : n; }
+function leer(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function guardar(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+var tt; function aviso(t){ var el = $('toast'); el.textContent = t; el.classList.add('ver'); clearTimeout(tt); tt = setTimeout(function(){ el.classList.remove('ver'); }, 2400); }
+
+// ===== Marca → modelo → tipo de repuesto =====
+// Lee los nombres tal como están en la hoja ("13 PRO MAX OLED", "A10/A10S", "RM NOTE 9 PRO CON MARCO")
+// y los agrupa por modelo de teléfono. Lo que no se reconoce como modelo sigue visible en "Ver por tipo".
+var TIPOS = [
+  // [clave, nombre, palabras (en el título de la tabla, ya normalizado)]
+  ['pantalla', 'Pantallas', /pantalla|lcd|display|touch|modulo/],
+  ['bateria', 'Baterías', /bater/],
+  ['carga', 'Flex de carga', /(flex|pin|puerto|conector) de carga|carga tipo|^carga/],
+  ['tapa', 'Tapas traseras', /tapa/],
+  ['camara', 'Cámara trasera', /camara(s)? trasera/],
+  ['frontal', 'Cámara frontal', /camara(s)? frontal/],
+  ['lente', 'Lentes de cámara', /lente/],
+  ['altavoz', 'Altavoz', /altavoz|bocina altavoz|speaker|^bocinas?$/],
+  ['auricular', 'Auricular', /auricular|bocina superior/],
+  ['huella', 'Huellas', /huella/],
+  ['nfc', 'Carga inalámbrica', /nfc|inalambrica/],
+  ['main', 'Flex main', /flex main/],
+  ['signal', 'Flex señal', /flex signal|flex senal/],
+  ['flexlcd', 'Flex LCD', /flex lcd/],
+  ['power', 'Flex power', /flex (de )?power|power/],
+  ['home', 'Botón Home', /boton home/],
+  ['nand', 'Memorias NAND', /nand|memoria/],
+  ['carcasa', 'Carcasas', /housing|carcasa/],
+  ['teclado', 'Teclados', /teclado/],
+  ['touchpad', 'Touchpad', /touchpad/],
+  ['wifi', 'Módulos WiFi', /wifi/],
+  ['glass', 'Glass OCA', /glass|oca/]
+];
+var ORDEN_TIPOS = ['pantalla', 'bateria', 'carga', 'tapa', 'camara', 'frontal', 'lente', 'altavoz', 'auricular', 'huella', 'main', 'signal', 'flexlcd', 'power', 'nfc', 'home', 'nand', 'carcasa', 'glass', 'teclado', 'touchpad', 'wifi'];
+function tipoDe(titulo, marcaContenedora){
+  var t = norm(titulo);
+  if (/face ?id/.test(t)) return { k: 'faceid', n: 'Flex Face ID / auricular' };
+  // "Flex LCD", "Flex main"… antes que "pantalla"/"lcd"
+  var orden = ['main', 'signal', 'flexlcd', 'carga', 'nfc', 'power'];
+  for (var i = 0; i < orden.length; i++) { var d = TIPOS.filter(function(x){ return x[0] === orden[i]; })[0]; if (d[2].test(t)) return { k: d[0], n: d[1] }; }
+  for (var j = 0; j < TIPOS.length; j++) if (TIPOS[j][2].test(t)) return { k: TIPOS[j][0], n: TIPOS[j][1] };
+  if (marcaContenedora && /glass|oca/.test(norm(marcaContenedora))) return { k: 'glass', n: 'Glass OCA' };
+  if (t === 'repuestos') return { k: 'otro-repuestos', n: 'Otros repuestos', otro: true };
+  return { k: 'otro-' + slug(titulo), n: titulo, otro: true };
+}
+
+// Palabras que describen la calidad o el tipo de pieza, no el modelo
+var VARIANTES = [
+  [/\bC\/ ?(FRAME|MARCO)\b/g, 'con marco'], [/\bCON (FRAME|MARCO)\b/g, 'con marco'], [/\bSIN (FRAME|MARCO)\b/g, 'sin marco'],
+  [/\bCON BASE\b/g, 'con base'], [/\(NO IC\)/g, 'sin IC'], [/\bSOFT OLED JCID IC ORIG\b/g, 'Soft OLED JCID (IC original)'],
+  [/\bINCELL JK\b/g, 'Incell JK'], [/\bINCELL\b/g, 'Incell'], [/\bJK\b/g, 'JK'], [/\bOLED\b/g, 'OLED'], [/\bORIGINAL\b/g, 'Original'],
+  [/\bTRAIDO\b/g, 'traído'], [/\bABAJO\b/g, 'inferior'], [/\bOUTER\b/g, 'externa'], [/\bBIG LCD\b/g, 'interna (grande)'],
+  [/\bT[AC]{2}TIL\b/g, 'táctil'], [/\bTOUCH\b/g, 'táctil'], [/\bLCD\b/g, 'LCD'], [/\bMODULO\b/g, 'módulo'],
+  [/\bPAR\b/g, 'par'], [/\bCASE\b/g, 'estuche'], [/\bUS\b/g, 'inglés (US)']
+];
+var TYPOS = [
+  [/\bAO(\d)/g, 'A0$1'], [/\bNOA\b/g, 'NOVA'], [/\bPOXO\b/g, 'POCO'], [/\b(REMDI|RD|RM)\b/g, 'REDMI'], [/\bHOTE\b/g, 'HOT'],
+  [/\bRELME\b/g, 'REALME'], [/\bPLSU\b/g, 'PLUS'], [/\bONE ?PLUS\b|\bONEPLUS\b/g, ''], [/\bGALAXY\b/g, ''],
+  [/\bNOTE(\d)/g, 'NOTE $1'], [/(\d)(LITE|PRO|PLUS)\b/g, '$1 $2'], [/\bA(\d+)CORE\b/g, 'A$1 CORE'], [/(\d)(SE)\b/g, '$1 $2'],
+  [/\bPIXEL (\d)XL\b/g, 'PIXEL $1 XL'], [/\bZ (FLIP|FOLD)\b/g, '$1'], [/^F(\d)$/g, 'POCO F$1'], [/\bREDMI M(\d)/g, 'POCO M$1'],
+  [/^HONOR MAGIC\b/g, 'MAGIC'], [/^(X\d+[A-Z]?)\b/g, 'HONOR $1'], [/\s+/g, ' ']
+];
+var PREFIJOS = { 'iphone': /^(IPHONE|IP)\s+/, 'samsung': /^SAMSUNG\s+/, 'motorola': /^MOTO\s+/, 'nokia': /^NOKIA\s+/, 'realme': /^REALME\s+/ };
+
+/** "13 PRO MAX OLED" → { modelos: ['13 PRO MAX'], var: ['OLED'] } (null si no parece un modelo) */
+function leerNombre(marca, nombre){
+  var s = String(nombre || '').toUpperCase().replace(/[–—]/g, '-').trim(), vars = [], km = slug(marca);
+  VARIANTES.forEach(function(v){ s = s.replace(v[0], function(){ if (vars.indexOf(v[1]) < 0) vars.push(v[1]); return ' '; }); });
+  var nota = ''; s = s.replace(/\(([^)]*)\)/g, function(_, x){ nota = x.trim(); return ' '; });
+  TYPOS.forEach(function(t){ s = s.replace(t[0], t[1]); });
+  s = s.trim();
+  if (PREFIJOS[km]) s = s.replace(PREFIJOS[km], '');
+  if (!s) return null;
+  var partes = s.split(/\s*\/\s*/).filter(Boolean);
+  // "12/12 PRO": la primera parte puede ser solo el número
+  var modelos = [];
+  partes.forEach(function(p){
+    var m = km === 'iphone' ? modeloIphone(p) : modeloGenerico(p, km);
+    if (m && modelos.indexOf(m) < 0) modelos.push(m);
+  });
+  if (!modelos.length || modelos.length !== partes.length) return null;
+  return { modelos: modelos, vars: vars, nota: nota };
+}
+function modeloIphone(p){
+  p = p.replace(/\bNORMAL\b/, '').trim();
+  var m = p.match(/^(\d{1,2})(G|C|S|E|SP|P|\+|S\+)?(?:\s+(.*))?$/);
+  if (m) {
+    var n = Number(m[1]); if (n < 4 || n > 20) return null;
+    var suf = m[2] || '', resto = (m[3] || '').trim();
+    var s = { 'G': '', 'C': 'C', 'S': 'S', 'E': 'E', 'P': ' PLUS', '+': ' PLUS', 'SP': 'S PLUS', 'S+': 'S PLUS' }[suf];
+    if (s == null) s = '';
+    resto = resto.replace(/^PM$/, 'PRO MAX');
+    if (resto && !/^(MINI|PLUS|PRO|PRO MAX|AIR|E)$/.test(resto)) return null;
+    return (n + s + (resto ? ' ' + resto : '')).trim();
+  }
+  m = p.match(/^(X|XR|XS|XS MAX|SE|SE 20(20|22))$/);
+  return m ? m[1] : null;
+}
+function modeloGenerico(p, km){
+  if (!/\d/.test(p) && !/^(G|E|EDGE|ONE)\s+[A-Z]+/.test(p) && !/^(GRAND PRIME|NOTE LITE|X|XR|XS)$/.test(p)) return null;
+  if (p.split(' ').length > 5) return null;
+  p = p.replace(/\s+4G$/, '');                                        // "A22 4G" = "A22"
+  if (/^(SERIES?|SERIE|TAPADERAS|CUBO|CABLE|CARGADOR|RIEL|FUENTE)\b/.test(p)) return null;
+  return p;
+}
+
+/** Nombre para mostrar: "13 PRO MAX" → "iPhone 13 Pro Max"; "REDMI NOTE 12 PRO" → "Redmi Note 12 Pro" */
+function nombreModelo(marca, k){
+  var w = k.split(' ').map(function(x){
+    if (/\d/.test(x) || /^(SE|FE|XL|XR|XS|X|II|GT|GR\d*)$/.test(x)) return x.replace(/(\d)(I)$/, '$1i');
+    return x.charAt(0) + x.slice(1).toLowerCase();
+  }).join(' ');
+  var km = slug(marca);
+  if (km === 'iphone') return 'iPhone ' + w;
+  if (km === 'one-plus') return 'OnePlus ' + w;
+  return w.replace(/^Mi /, 'Mi ').replace(/^Flip /, 'Z Flip ').replace(/^Fold /, 'Z Fold ');
+}
+/** Familia para agrupar los botones de modelos */
+function familia(marca, k){
+  var km = slug(marca);
+  if (km === 'iphone') return '';
+  if (km === 'samsung') {
+    if (/^A\d/.test(k)) return 'Serie A';
+    if (/^S\d/.test(k)) return 'Serie S';
+    if (/^NOTE/.test(k)) return 'Note';
+    if (/^(FLIP|FOLD)/.test(k)) return 'Z Flip / Z Fold';
+    if (/^J\d/.test(k)) return 'Serie J';
+    if (/^M\d/.test(k)) return 'Serie M';
+    return 'Otros';
+  }
+  if (km === 'xiaomi') {
+    if (/^REDMI NOTE/.test(k)) return 'Redmi Note';
+    if (/^REDMI/.test(k)) return 'Redmi';
+    if (/^POCO|^F\d/.test(k)) return 'Poco';
+    if (/^MI/.test(k)) return 'Mi';
+    return 'Otros';
+  }
+  var m = k.match(/^([A-Z]+)/);
+  var f = m ? m[1] : '';
+  if (!f) return '';
+  if (f.length <= 2) return 'Serie ' + f;
+  return f.charAt(0) + f.slice(1).toLowerCase();
+}
+/** Orden: número principal, luego variante (mini < normal < plus < pro < pro max < ultra) */
+var RANGO_IPHONE = { '': 0, 'C': 1, 'PLUS': 2, 'S': 3, 'S PLUS': 4, 'E': 5, 'MINI': -1, 'AIR': 2.5, 'PRO': 6, 'PRO MAX': 7 };
+var ORDEN_FAM = { 'Serie A': 1, 'Serie S': 2, 'Note': 3, 'Z Flip / Z Fold': 4, 'Serie M': 5, 'Serie J': 6, 'Redmi Note': 1, 'Redmi': 2, 'Poco': 3, 'Mi': 4, 'Otros': 99 };
+var RANGO = { 'MINI': 1, 'E': 2, 'C': 2, 'LITE': 3, '': 4, 'S': 5, 'PLUS': 6, '+': 6, 'S PLUS': 7, 'FE': 7, 'AIR': 8, 'PRO': 9, 'PRO MAX': 10, 'ULTRA': 11 };
+function claveOrden(marca, k){
+  var km = slug(marca);
+  if (km === 'iphone') {
+    var esp = { 'SE': 6.5, 'SE 2020': 8.5, 'SE 2022': 13.5, 'X': 9, 'XR': 9.2, 'XS': 9.4, 'XS MAX': 9.6 };
+    if (k in esp) return [esp[k], 0];
+    var m = k.match(/^(\d+)(C|S|E)?(?:\s*(.*))?$/) || [];
+    var suf = ((m[2] || '') + (m[3] ? (m[2] ? ' ' : '') + m[3] : '')).trim();
+    return [Number(m[1] || 99), RANGO_IPHONE[suf] != null ? RANGO_IPHONE[suf] : 5];
+  }
+  var n = k.match(/(\d+)/);
+  var rest = k.replace(/^[A-Z]+\s*\d+\s*/, '').trim();
+  var fam = familia(marca, k);
+  return [ORDEN_FAM[fam] || 50, fam, n ? Number(n[1]) : 0, k.replace(/\d+/g, ''), RANGO[rest] != null ? RANGO[rest] : 5, k];
+}
+function compararOrden(a, b){
+  for (var i = 0; i < Math.max(a.length, b.length); i++) {
+    var x = a[i], y = b[i];
+    if (x === y) continue;
+    if (x == null) return -1; if (y == null) return 1;
+    return typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y));
+  }
+  return 0;
+}
+
+var MODO_MODELO = /^(iphone|samsung|xiaomi|huawei|motorola|google pixel|lg|one plus|macbook)$/;
+/** Arma, para cada marca, sus modelos con sus tipos de repuesto (y decide si conviene ese modo). */
+function armarModelos(marcas){
+  marcas.forEach(function(m){
+    var mods = {}, sinModelo = [], total = 0;
+    var tablas = m.b.map(function(t){ return { t: t, tipo: tipoDe(t.t) }; });
+    // "Glass OCA" (otra pestaña) con una tabla llamada como esta marca → también aparece aquí
+    marcas.forEach(function(o){
+      if (o === m) return;
+      o.b.forEach(function(t){ if (slug(t.t) === m.s && /glass|oca/.test(norm(o.n))) tablas.push({ t: t, tipo: { k: 'glass', n: o.n } }); });
+    });
+    tablas.forEach(function(x){
+      x.t.items.forEach(function(it){
+        total++;
+        var r = leerNombre(m.n, it.modelo);
+        // Memorias NAND de iPhone: "SERIES 13 256GB" sirve para toda la serie 13
+        var serie = slug(m.n) === 'iphone' && String(it.modelo).toUpperCase().match(/^SERIES?\s+(\d+(?:\s*\/\s*\d+)*)\s*(.*)$/);
+        if (serie) { r = { serie: serie[1].split('/').map(function(z){ return z.trim(); }), vars: [serie[2].trim()].filter(Boolean), nota: '' }; }
+        if (!r) { sinModelo.push(it); return; }
+        it.vars = r.vars; it.notaModelo = r.nota; it.tipoK = x.tipo.k;
+        (r.modelos || []).forEach(function(k){
+          var md = mods[k] = mods[k] || { k: k, tipos: {} };
+          var tp = md.tipos[x.tipo.k] = md.tipos[x.tipo.k] || { k: x.tipo.k, n: x.tipo.n, items: [], tablas: [] };
+          if (tp.items.indexOf(it) < 0) tp.items.push(it);
+          if (tp.tablas.indexOf(x.t.t) < 0) tp.tablas.push(x.t.t);
+          it.sirve = r.modelos;
+        });
+        if (r.serie) it.pendienteSerie = { series: r.serie, tipo: x.tipo, tabla: x.t.t };
+      });
+    });
+    // Asigna las piezas "por serie" a cada modelo de esa serie
+    tablas.forEach(function(x){ x.t.items.forEach(function(it){
+      if (!it.pendienteSerie) return;
+      var ps = it.pendienteSerie, aplica = Object.keys(mods).filter(function(k){ return ps.series.indexOf(k.split(' ')[0].replace(/\D/g, '')) >= 0 && /^\d/.test(k); });
+      if (!aplica.length) { sinModelo.push(it); return; }
+      it.sirve = aplica.map(function(k){ return k; });
+      aplica.forEach(function(k){
+        var tp = mods[k].tipos[ps.tipo.k] = mods[k].tipos[ps.tipo.k] || { k: ps.tipo.k, n: ps.tipo.n, items: [], tablas: [] };
+        tp.items.push(it); if (tp.tablas.indexOf(ps.tabla) < 0) tp.tablas.push(ps.tabla);
+      });
+    }); });
+    var lista = Object.keys(mods).map(function(k){
+      var md = mods[k];
+      md.nombre = nombreModelo(m.n, k); md.s = slug(md.nombre); md.fam = familia(m.n, k); md.orden = claveOrden(m.n, k);
+      md.lista = Object.keys(md.tipos).map(function(t){ return md.tipos[t]; }).sort(function(a, b){
+        var ia = ORDEN_TIPOS.indexOf(a.k), ib = ORDEN_TIPOS.indexOf(b.k);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.n.localeCompare(b.n);
+      });
+      return md;
+    }).sort(function(a, b){ return compararOrden(a.orden, b.orden); });
+    var conModelo = total - sinModelo.length, tiposPorModelo = lista.length ? lista.reduce(function(s, x){ return s + x.lista.length; }, 0) / lista.length : 0;
+    m.modelos = lista; m.sinModelo = sinModelo;
+    // Solo usa "por modelo" si casi todo se reconoce y los modelos tienen varios tipos de repuesto
+    m.porModelo = MODO_MODELO.test(norm(m.n)) && lista.length >= 3 && total && conModelo / total >= 0.75 && tiposPorModelo >= 1.4 && m.b.length >= 2;
+    m.stats = { total: total, conModelo: conModelo, modelos: lista.length, tpm: Math.round(tiposPorModelo * 10) / 10 };
+  });
+}
+
+// ===== Íconos de referencia por tipo de repuesto (dibujados, sin imágenes externas) =====
+var SVG = function(d){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; };
+var ICONOS = {
+  pantalla: SVG('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><rect x="8" y="5" width="8" height="12.5" rx=".8" fill="currentColor" opacity=".18"/><path d="M11 19.6h2"/>'),
+  bateria: SVG('<rect x="2.5" y="7" width="17" height="10" rx="2"/><path d="M21.5 10.5v3"/><path d="M11.5 9l-2.5 3.5h3.5L10 16"/>'),
+  carga: SVG('<rect x="5" y="3" width="14" height="8" rx="4"/><path d="M8.5 7h7"/><path d="M12 11v4"/><path d="M9 15h6l-1 6h-4z"/>'),
+  tapa: SVG('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><rect x="8" y="4.5" width="4.5" height="5" rx="1.4"/><circle cx="10.2" cy="6" r=".6" fill="currentColor"/><circle cx="10.2" cy="8.2" r=".6" fill="currentColor"/>'),
+  camara: SVG('<path d="M3 8.5a2 2 0 0 1 2-2h2.2L9 4h6l1.8 2.5H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.8"/>'),
+  frontal: SVG('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><circle cx="12" cy="5.4" r="1.1" fill="currentColor"/><circle cx="12" cy="13" r="3"/>'),
+  lente: SVG('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/>'),
+  altavoz: SVG('<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>'),
+  auricular: SVG('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 5.3h4"/><path d="M9.5 9.5c1.5-1 3.5-1 5 0"/><path d="M8.3 11.8c2.2-1.6 5.2-1.6 7.4 0"/>'),
+  faceid: SVG('<path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 9.5v1M15 9.5v1M12 9.5v3.5h-1"/><path d="M9.3 15.5c1.6 1.2 3.8 1.2 5.4 0"/>'),
+  huella: SVG('<path d="M7.5 18.5c1-2 1.5-4 1.5-6.5a3 3 0 0 1 6 0c0 2.5-.3 4.5-1.2 6.8"/><path d="M12 12c0 3-.6 5.3-1.8 7.3"/><path d="M5 15c.4-1 .6-2 .6-3.4a6.4 6.4 0 0 1 12.8 0c0 1.5-.1 2.9-.4 4.3"/><path d="M6.7 6.2A8.5 8.5 0 0 1 20 9"/>'),
+  nfc: SVG('<path d="M12 18.5h.01"/><path d="M8.8 15.4a4.5 4.5 0 0 1 6.4 0"/><path d="M6 12.5a8.5 8.5 0 0 1 12 0"/><path d="M3.2 9.6a12.5 12.5 0 0 1 17.6 0"/>'),
+  flex: SVG('<path d="M4 4h7v5H7v6h10v5h-7"/><path d="M17 15v-3"/><rect x="2.5" y="2.5" width="5" height="3" rx=".6" fill="currentColor" opacity=".25"/><rect x="15" y="18.5" width="6.5" height="3" rx=".6" fill="currentColor" opacity=".25"/>'),
+  power: SVG('<path d="M12 3v8"/><path d="M6.6 6.6a7.5 7.5 0 1 0 10.8 0"/>'),
+  home: SVG('<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="4.5"/>'),
+  nand: SVG('<rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5" rx=".6" fill="currentColor" opacity=".2"/><path d="M9 2.5v4M12 2.5v4M15 2.5v4M9 17.5v4M12 17.5v4M15 17.5v4M2.5 9h4M2.5 12h4M2.5 15h4M17.5 9h4M17.5 12h4M17.5 15h4"/>'),
+  carcasa: SVG('<rect x="5" y="2" width="14" height="20" rx="3"/><rect x="7.5" y="4.5" width="9" height="15" rx="1.5"/><path d="M19 8h1.3M19 11h1.3"/>'),
+  glass: SVG('<path d="M7 4h11l-2 16H5z"/><path d="M9 7.5l5-1M8.5 11l4-1"/>'),
+  teclado: SVG('<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 9.5h.01M9 9.5h.01M12 9.5h.01M15 9.5h.01M18 9.5h.01M6 12.5h.01M9 12.5h.01M12 12.5h.01M15 12.5h.01M18 12.5h.01M8 15.5h8"/>'),
+  touchpad: SVG('<rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 15h16M12 15v4"/>'),
+  wifi: SVG('<path d="M12 19h.01"/><path d="M8.5 15.5a5 5 0 0 1 7 0"/><path d="M5.5 12.3a9.2 9.2 0 0 1 13 0"/><path d="M2.5 9a13.5 13.5 0 0 1 19 0"/>'),
+  otro: SVG('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3.5 17.5a1.8 1.8 0 0 0 2.5 2.5l5.8-5.8a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>')
+};
+function iconoTipo(k){
+  if (ICONOS[k]) return ICONOS[k];
+  if (k === 'main' || k === 'signal' || k === 'flexlcd') return ICONOS.flex;
+  return ICONOS.otro;
+}
+
+/** "Baterías iPhone Sin Bms" → "Sin Bms" (lo que distingue a esa tabla dentro de su tipo) */
+function calificador(titulo, tipoN, marcaN){
+  var fuera = norm(tipoN + ' ' + marcaN + ' de y la las los para iphone samsung xiaomi huawei pantallas baterias bateria flex carga camaras camara tapas traseras tapaderas').split(' ');
+  var w = String(titulo).replace(/\(.*?\)/g, ' ').split(/\s+/).filter(Boolean), res = [];
+  for (var i = 0; i < w.length; i++) {
+    var n = norm(w[i]);
+    if (/^(serie|series|linea)$/.test(n)) break;
+    if (fuera.indexOf(n) >= 0 || fuera.indexOf(n.replace(/s$/, '')) >= 0) continue;
+    res.push(w[i]);
+  }
+  return res.join(' ');
+}
+
+// Datos: marcas = [{ n: marca, b: [{ t: tabla, p: [etiquetas de precio], i: [[modelo, [precios], nota, nuevo]] }] }]
+var marcas = [], items = [], porId = {};
+var vista = { ruta: [], q: '' };
+var pedido = leer(GUARDA_PED, {});   // id → cantidad
+
+function recibir(d){
+  marcas = d.marcas || []; items = []; porId = {};
+  marcas.forEach(function(m){
+    m.s = slug(m.n);
+    m.b.forEach(function(t){
+      t.s = slug(t.t); t.items = [];
+      t.i.forEach(function(r){
+        var x = { id: m.s + '|' + t.s + '|' + norm(r[0]), marca: m.n, tabla: t.t, modelo: r[0], precios: r[1] || [], etiquetas: t.p || [], nota: r[2] || '', nuevo: !!r[3] };
+        x.precio = 0; for (var k = 0; k < x.precios.length; k++) { if (num(x.precios[k])) { x.precio = num(x.precios[k]); break; } }
+        if (porId[x.id]) return;            // filas repetidas
+        porId[x.id] = x; t.items.push(x); items.push(x);
+      });
+    });
+  });
+  try { armarModelos(marcas); } catch (e) { marcas.forEach(function(m){ m.porModelo = false; }); }
+  // La búsqueda también entiende el nombre completo del modelo ("redmi note 12 pro", "iphone 13 pro max")
+  marcas.forEach(function(m){ (m.modelos || []).forEach(function(md){ md.lista.forEach(function(tp){ tp.items.forEach(function(x){ x.extra = (x.extra || '') + ' ' + md.nombre + ' ' + tp.n; }); }); }); });
+  items.forEach(function(x){ x.busca = norm([x.marca, x.tabla, x.modelo, x.nota, x.extra || ''].join(' ')); });
+  Object.keys(pedido).forEach(function(id){ if (!porId[id]) delete pedido[id]; });
+  leerHash(); pintar(); pintarPedido();
+}
+function cargar(){
+  fetch(API + '?fn=repuestos').then(function(r){ return r.json(); }).then(function(d){
+    if (!d || d.error) throw 0;
+    guardar(GUARDA, d); recibir(d);
+  }).catch(function(){ if (!items.length) $('app').innerHTML = '<div class="vacio">No se pudo cargar el catálogo. Revisa tu conexión y recarga.</div>'; });
+}
+function marcaPorSlug(s){ for (var i = 0; i < marcas.length; i++) if (marcas[i].s === s) return marcas[i]; return null; }
+function tablaPorSlug(m, s){ if (!m) return null; for (var i = 0; i < m.b.length; i++) if (m.b[i].s === s) return m.b[i]; return null; }
+function modeloPorSlug(m, s){ var l = (m && m.modelos) || []; for (var i = 0; i < l.length; i++) if (l[i].s === s) return l[i]; return null; }
+function tipoPorClave(md, k){ var l = (md && md.lista) || []; for (var i = 0; i < l.length; i++) if (l[i].k === k) return l[i]; return null; }
+function cuenta(m){ return m.b.reduce(function(s, t){ return s + t.items.length; }, 0); }
+function desde(lista){ var p = lista.map(function(x){ return x.precio; }).filter(Boolean); return p.length ? Math.min.apply(null, p) : 0; }
+
+// ===== Navegación por enlaces: #iphone · #iphone/m/iphone-13-pro-max · #iphone/m/iphone-13-pro-max/pantalla · #iphone/t/pantallas-iphone · #iphone/tipos =====
+function ir(h){
+  vista.q = ''; $('q').value = '';
+  if (location.hash.slice(1) === h) { leerHash(); pintar(); } else location.hash = h;   // cada paso queda en el historial: el "atrás" del celular regresa
+  window.scrollTo(0, 0);
+}
+function leerHash(){ vista.ruta = decodeURIComponent(location.hash.slice(1)).split('/').filter(Boolean); }
+window.addEventListener('hashchange', function(){ vista.q = ''; $('q').value = ''; leerHash(); pintar(); window.scrollTo(0, 0); });
+
+// ===== Pantallas =====
+function chips(m){
+  var h = '<button class="chip' + (!m ? ' on' : '') + '" data-ir="">Inicio</button>';
+  marcas.forEach(function(x){ h += '<button class="chip' + (m === x ? ' on' : '') + '" data-ir="' + x.s + '">' + esc(x.n) + '</button>'; });
+  $('chips').innerHTML = h;
+  var on = $('chips').querySelector('.on'); if (on && on.scrollIntoView && m) on.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+function migas(pasos){
+  // pasos: [[texto, hash], …]; el último es la pantalla actual
+  var h = '<div class="migas"><button data-ir="">Inicio</button>';
+  pasos.forEach(function(p, i){ h += ' › ' + (i < pasos.length - 1 ? '<button data-ir="' + esc(p[1]) + '">' + esc(p[0]) + '</button>' : esc(p[0])); });
+  return h + '</div>';
+}
+function regresar(h, texto){ return '<button class="regresar" data-ir="' + esc(h) + '">‹ ' + esc(texto) + '</button>'; }
+function precioHtml(x){
+  var reales = x.precios.map(function(p, k){ return { p: p, e: x.etiquetas[k] || '' }; }).filter(function(o){ return o.p; });
+  if (!reales.length) return '<span class="pronto">Consultar</span>';
+  if (reales.length === 1) return num(reales[0].p) ? dinero(num(reales[0].p)) : '<span class="pronto">' + esc(reales[0].p) + '</span>';
+  return '<div class="pp">' + reales.map(function(o){ return '<div>' + esc(o.e) + ' ' + (num(o.p) ? dinero(num(o.p)) : esc(o.p)) + '</div>'; }).join('') + '</div>';
+}
+function acciones(x){
+  var n = pedido[x.id] || 0, acc = '';
+  if (x.precio) acc = n ? '<span class="paso"><button data-menos="' + esc(x.id) + '" aria-label="Quitar uno">−</button><span>' + n + ' en pedido</span><button data-mas="' + esc(x.id) + '" aria-label="Agregar uno">+</button></span>'
+                       : '<button class="btn btn-add" data-mas="' + esc(x.id) + '">+ Agregar</button>';
+  return acc + '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + linkWA('Hola, me interesa este repuesto: ' + nombreRep(x) + (x.precio ? ' — ' + dinero(x.precio) : '')) + '">Consultar</a>';
+}
+function filaRep(x, conTabla, titulo, sub){
+  var multi = x.precios.filter(Boolean).length > 1;
+  var detalle = sub != null ? sub : [conTabla ? x.tabla : '', x.nota].filter(Boolean).join(' · ');
+  return '<div class="rep"><div class="t">' + esc(titulo || x.modelo) + (x.nuevo ? '<span class="nuevo">NUEVO</span>' : '') + '</div>' +
+    '<div class="p"' + (multi ? ' style="font-size:14px"' : '') + '>' + precioHtml(x) + '</div>' +
+    (detalle ? '<div class="o">' + esc(detalle) + '</div>' : '') +
+    '<div class="acc">' + acciones(x) + '</div></div>';
+}
+function pintar(){
+  var app = $('app');
+  if (!items.length) { chips(null); app.innerHTML = '<div class="vacio">Cargando catálogo…</div>'; return; }
+  var r = vista.ruta, m = marcaPorSlug(r[0] || '');
+  chips(m);
+  if (vista.q) return pintarBusqueda(app);
+  if (!m) return pintarInicio(app);
+  if (r[1] === 'm') {
+    var md = modeloPorSlug(m, r[2] || '');
+    if (!md) return pintarModelos(app, m);
+    var tp = tipoPorClave(md, r[3] || '');
+    return tp ? pintarTipo(app, m, md, tp) : pintarModelo(app, m, md);
+  }
+  if (r[1] === 'otros') return pintarOtros(app, m);
+  var t = tablaPorSlug(m, r[1] === 't' ? r[2] : r[1]);            // también acepta los enlaces viejos #iphone/pantallas-iphone
+  if (t) return pintarTabla(app, m, t);
+  if (r[1] === 'tipos' || !m.porModelo) return pintarTablas(app, m);
+  return pintarModelos(app, m);
+}
+function pintarInicio(app){
+  app.innerHTML = '<h2>¿Qué estás reparando?</h2><p class="sub">Elige la marca o categoría para ver repuestos y precios de mayoreo.</p>' +
+    '<div class="marcas">' + marcas.map(function(x){ var n = cuenta(x); return '<button class="marca-btn" data-ir="' + x.s + '"><span class="nom">' + esc(x.n) + '</span><span class="uni">' + n + (n === 1 ? ' repuesto' : ' repuestos') + '</span></button>'; }).join('') + '</div>' + info();
+}
+// Marca → botones de modelos (agrupados por serie)
+function pintarModelos(app, m){
+  var fams = [], porFam = {};
+  m.modelos.forEach(function(md){ if (!porFam[md.fam]) { porFam[md.fam] = []; fams.push(md.fam); } porFam[md.fam].push(md); });
+  var conTitulos = fams.length > 1;
+  app.innerHTML = migas([[m.n, m.s]]) + '<h2>' + esc(m.n) + '</h2><p class="sub">Elige el modelo que estás reparando.</p>' +
+    fams.map(function(f){
+      return (conTitulos && f ? '<h3 class="fam">' + esc(f) + '</h3>' : '') + '<div class="mods">' + porFam[f].map(function(md){
+        var nuevos = md.lista.some(function(tp){ return tp.items.some(function(x){ return x.nuevo; }); });
+        return '<button class="mod-btn" data-ir="' + m.s + '/m/' + md.s + '"><b>' + esc(md.nombre) + '</b><span>' + md.lista.length + (md.lista.length === 1 ? ' tipo' : ' tipos') + ' de repuesto' + (nuevos ? ' · <i class="nuevo-p">NUEVO</i>' : '') + '</span></button>';
+      }).join('') + '</div>';
+    }).join('') +
+    '<div class="otras-vistas"><button class="link" data-ir="' + m.s + '/tipos">Ver la lista por tipo de repuesto ›</button>' +
+    (m.sinModelo.length ? '<button class="link" data-ir="' + m.s + '/otros">Otros repuestos de ' + esc(m.n) + ' (' + m.sinModelo.length + ') ›</button>' : '') + '</div>';
+}
+// Modelo → botones de tipo de repuesto con ícono
+function pintarModelo(app, m, md){
+  app.innerHTML = migas([[m.n, m.s], [md.nombre, m.s + '/m/' + md.s]]) + regresar(m.s, 'Ver todos los modelos ' + m.n) +
+    '<h2>' + esc(md.nombre) + '</h2><p class="sub">¿Qué repuesto necesitas?</p>' +
+    '<div class="tipos">' + md.lista.map(function(tp){
+      var p = desde(tp.items), nuevos = tp.items.some(function(x){ return x.nuevo; });
+      return '<button class="tipo-btn" data-ir="' + m.s + '/m/' + md.s + '/' + tp.k + '"><span class="ico">' + iconoTipo(tp.k) + '</span>' +
+        '<b>' + esc(tp.n) + '</b><span>' + (p ? 'desde ' + dinero(p) : 'Consultar') + (tp.items.length > 1 ? ' · ' + tp.items.length + ' opciones' : '') + '</span>' +
+        (nuevos ? '<i class="nuevo">NUEVO</i>' : '') + '</button>';
+    }).join('') + '</div>';
+}
+// Tipo de repuesto de un modelo → opciones con precio
+function pintarTipo(app, m, md, tp){
+  var lista = tp.items.slice().sort(function(a, b){ return (a.precio || 1e9) - (b.precio || 1e9); });
+  app.innerHTML = migas([[m.n, m.s], [md.nombre, m.s + '/m/' + md.s], [tp.n, '']]) + regresar(m.s + '/m/' + md.s, 'Ver otros repuestos del ' + md.nombre) +
+    '<h2 class="con-ico"><span class="ico">' + iconoTipo(tp.k) + '</span>' + esc(tp.n) + ' · ' + esc(md.nombre) + '</h2>' +
+    '<p class="sub">' + lista.length + (lista.length === 1 ? ' opción' : ' opciones') + ' · precios de mayoreo</p>' +
+    '<section class="grupo">' + lista.map(function(x){
+      var cal = calificador(x.tabla, tp.n, m.n);
+      var titulo = [cal].concat(x.vars || []).filter(Boolean).join(' · ');
+      titulo = titulo ? titulo.charAt(0).toUpperCase() + titulo.slice(1) : tp.n;
+      var otros = x.pendienteSerie ? 'Sirve para toda la serie ' + x.pendienteSerie.series.join(' y ') : (x.sirve || []).length > 1 ? 'Sirve para: ' + x.sirve.map(function(k){ return nombreModelo(m.n, k); }).join(', ') : '';
+      var sub = [!cal && !(x.vars || []).length && tp.tablas.length > 1 ? x.tabla : '', otros, x.notaModelo, x.nota].filter(Boolean).join(' · ');
+      return filaRep(x, false, titulo, sub);
+    }).join('') + '</section>';
+}
+function pintarTablas(app, m){
+  app.innerHTML = migas([[m.n, m.s]]) + (m.porModelo ? regresar(m.s, 'Buscar por modelo') : '') + '<h2>' + esc(m.n) + '</h2><p class="sub">Elige el tipo de repuesto.</p>' +
+    '<div class="tablas">' + m.b.map(function(x){ var nuevos = x.items.filter(function(i){ return i.nuevo; }).length;
+      var tk = tipoDe(x.t).k;
+      return '<button class="tabla-btn" data-ir="' + m.s + '/t/' + x.s + '"><span class="ico">' + iconoTipo(tk.indexOf('otro-') === 0 ? 'otro' : tk) + '</span><div><b>' + esc(x.t) + '</b>' + (nuevos ? '<span class="nuevo">' + nuevos + ' NUEVO' + (nuevos === 1 ? '' : 'S') + '</span>' : '') + '<br><span>' + x.items.length + (x.items.length === 1 ? ' modelo' : ' modelos') + '</span></div><span class="flecha">›</span></button>'; }).join('') + '</div>';
+}
+function pintarTabla(app, m, t){
+  app.innerHTML = migas([[m.n, m.s], [t.t, '']]) + regresar(m.s + (m.porModelo ? '/tipos' : ''), 'Ver otros repuestos de ' + m.n) +
+    '<h2>' + esc(t.t) + '</h2><p class="sub">' + t.items.length + (t.items.length === 1 ? ' modelo' : ' modelos') + ' · precios de mayoreo</p>' +
+    '<section class="grupo">' + t.items.map(function(x){ return filaRep(x, false); }).join('') + '</section>';
+}
+function pintarOtros(app, m){
+  app.innerHTML = migas([[m.n, m.s], ['Otros repuestos', '']]) + regresar(m.s, 'Ver todos los modelos ' + m.n) +
+    '<h2>Otros repuestos de ' + esc(m.n) + '</h2><p class="sub">Repuestos que no son de un modelo en específico.</p>' +
+    '<section class="grupo">' + m.sinModelo.map(function(x){ return filaRep(x, true); }).join('') + '</section>';
+}
+function pintarBusqueda(app){
+  var palabras = norm(vista.q).split(' ');
+  var res = items.filter(function(x){ return palabras.every(function(p){ return x.busca.indexOf(p) >= 0; }); });
+  var g = {}, orden = [];
+  res.slice(0, 200).forEach(function(x){ var k = x.marca + ' · ' + x.tabla; if (!g[k]) { g[k] = []; orden.push(k); } g[k].push(x); });
+  app.innerHTML = '<h2>Resultados</h2><p class="sub">' + res.length + (res.length === 1 ? ' repuesto encontrado' : ' repuestos encontrados') + ' para «' + esc(vista.q) + '»' + (res.length > 200 ? ' (se muestran 200; escribe algo más específico)' : '') + '</p>' +
+    (res.length ? orden.map(function(k){ return '<section class="grupo"><div class="grupo-cab"><h3>' + esc(k) + '</h3><span>' + g[k].length + '</span></div>' + g[k].map(function(x){ return filaRep(x, false); }).join('') + '</section>'; }).join('')
+      : '<div class="vacio">No encontramos ese repuesto. <a href="' + linkWA('Hola, busco este repuesto: ' + vista.q) + '" target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>, puede que lo tengamos.</div>');
+}
+function info(){
+  return '<div class="info"><b>Retiro en tienda:</b> 7a Av. Norte 2-9, Santa Tecla, La Libertad · <b>Horario:</b> lunes a sábado, 8 a.m. a 5 p.m. · Envíos personalizados y departamentales. ' +
+    '<br><b>Pagos:</b> efectivo y transferencia. Precios sujetos a cambio; confirma disponibilidad por WhatsApp.</div>';
+}
+
+// ===== Pedido =====
+function nombreRep(x){ return x.tabla + ' — ' + x.modelo; }
+function linkWA(t){ return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(t); }
+function cambiar(id, d){
+  var n = Math.max(0, (pedido[id] || 0) + d);
+  if (n) pedido[id] = n; else delete pedido[id];
+  guardar(GUARDA_PED, pedido); pintar(); pintarPedido();
+  if (d > 0 && n === 1) aviso('Agregado a tu pedido');
+}
+function lineasPedido(){ return Object.keys(pedido).map(function(id){ var x = porId[id]; return x ? { x: x, n: pedido[id] } : null; }).filter(Boolean); }
+function pintarPedido(){
+  var ls = lineasPedido(), n = ls.reduce(function(s, l){ return s + l.n; }, 0), t = ls.reduce(function(s, l){ return s + l.n * l.x.precio; }, 0);
+  $('barraPedido').hidden = !n; $('bpN').textContent = n + (n === 1 ? ' repuesto' : ' repuestos'); $('bpT').textContent = dinero(t);
+  $('pedTotal').textContent = dinero(t);
+  $('pedLista').innerHTML = ls.length ? ls.map(function(l){
+    return '<div class="linea"><div><div class="t">' + esc(l.x.modelo) + '</div><div class="s">' + esc(l.x.marca + ' · ' + l.x.tabla) + ' · ' + dinero(l.x.precio) + ' c/u</div></div>' +
+      '<span class="paso"><button data-menos="' + esc(l.x.id) + '">−</button><span>' + l.n + '</span><button data-mas="' + esc(l.x.id) + '">+</button></span></div>';
+  }).join('') : '<p class="sub" style="padding:14px 0">Tu pedido está vacío.</p>';
+  if (!ls.length) $('modalPedido').hidden = true;
+}
+$('verPedido').addEventListener('click', function(){ $('pedTaller').value = leer(GUARDA_TALLER, ''); $('modalPedido').hidden = false; });
+$('cerrarPedido').addEventListener('click', function(){ $('modalPedido').hidden = true; });
+$('modalPedido').addEventListener('click', function(e){ if (e.target === $('modalPedido')) $('modalPedido').hidden = true; });
+$('vaciarPedido').addEventListener('click', function(){ pedido = {}; guardar(GUARDA_PED, pedido); pintar(); pintarPedido(); });
+$('enviarPedido').addEventListener('click', function(){
+  var ls = lineasPedido(); if (!ls.length) return;
+  var taller = $('pedTaller').value.trim(); guardar(GUARDA_TALLER, taller);
+  var t = ls.reduce(function(s, l){ return s + l.n * l.x.precio; }, 0);
+  var msg = 'Hola, quiero hacer este pedido de repuestos' + (taller ? ' (' + taller + ')' : '') + ':\n\n' +
+    ls.map(function(l){ return '• ' + nombreRep(l.x) + ' x' + l.n + ' — ' + dinero(l.n * l.x.precio); }).join('\n') +
+    '\n\nTotal: ' + dinero(t);
+  window.open(linkWA(msg), '_blank');
+});
+
+// ===== Eventos =====
+document.addEventListener('click', function(e){
+  var mas = e.target.closest('[data-mas]'); if (mas) { cambiar(mas.getAttribute('data-mas'), 1); return; }
+  var menos = e.target.closest('[data-menos]'); if (menos) { cambiar(menos.getAttribute('data-menos'), -1); return; }
+  var b = e.target.closest('[data-ir]'); if (b) { ir(b.getAttribute('data-ir')); }
+});
+var deb;
+$('q').addEventListener('input', function(e){ clearTimeout(deb); deb = setTimeout(function(){ vista.q = e.target.value.trim(); pintar(); }, 150); });
+
+// Abre al instante con la última copia y se actualiza
+var copia = leer(GUARDA, null);
+if (copia) recibir(copia);
+cargar();
+window.addEventListener('focus', cargar);
+setInterval(function(){ if (!document.hidden) cargar(); }, 180000);
+</script>
+</body>
+</html>
