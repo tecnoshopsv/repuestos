@@ -131,6 +131,9 @@
   .link{border:0;background:none;color:var(--morado-2);font-weight:700;font-size:14px;padding:0;cursor:pointer;text-align:left}
   .marca-btn:nth-child(odd){background:linear-gradient(145deg,#2B2B2B,#0E0E0E);color:#fff}
   .marca-btn:nth-child(even){background:#fff;color:#111;border:1px solid #E2E2E2;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  .copiar{display:none;border:0;background:none;color:#9a9a9a;font-size:12px;font-weight:600;padding:6px 2px;margin-left:auto;cursor:pointer}
+  body.cotizar .copiar{display:inline-flex;align-items:center;gap:4px}
+  body.cotizar .copiar:active{color:var(--texto)}
 </style>
 </head>
 <body>
@@ -523,7 +526,8 @@ function acciones(x){
   var n = pedido[x.id] || 0, acc = '';
   if (x.precio) acc = n ? '<span class="paso"><button data-menos="' + esc(x.id) + '" aria-label="Quitar uno">−</button><span>' + n + ' en pedido</span><button data-mas="' + esc(x.id) + '" aria-label="Agregar uno">+</button></span>'
                        : '<button class="btn btn-add" data-mas="' + esc(x.id) + '">+ Agregar</button>';
-  return acc + '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + linkWA('Hola, me interesa este repuesto: ' + nombreRep(x) + (x.precio ? ' — ' + dinero(x.precio) : '')) + '">Consultar</a>';
+  return acc + '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + linkWA('Hola, me interesa este repuesto: ' + nombreRep(x) + (x.precio ? ' — ' + dinero(x.precio) : '')) + '">Consultar</a>' +
+    '<button class="copiar" type="button" data-copiar="' + esc(x.id) + '" title="Copiar modelo y precio">⧉ Copiar</button>';
 }
 function filaRep(x, conTabla, titulo, sub){
   var multi = x.precios.filter(Boolean).length > 1;
@@ -628,6 +632,22 @@ function info(){
 }
 
 // ===== Pedido =====
+// ===== Modo cotizar (solo para el equipo: se activa abriendo la página con ?cotizar=1 y se quita con ?cotizar=0) =====
+var GUARDA_COT = 'ts_rep_cotizar';
+(function(){ var m = /[?&]cotizar=([01])/.exec(location.search); if (m) { try { localStorage.setItem(GUARDA_COT, m[1]); } catch (e) {} } var on = false; try { on = localStorage.getItem(GUARDA_COT) === '1'; } catch (e) {} if (on) document.body.classList.add('cotizar'); })();
+function textoCopia(x){
+  var reales = x.precios.map(function(p, k){ return { p: p, e: x.etiquetas[k] || '' }; }).filter(function(o){ return o.p; });
+  var f = function(p){ return num(p) ? dinero(num(p)) : p; };
+  var pr = !reales.length ? 'precio a consultar' : reales.length === 1 ? f(reales[0].p) : reales.map(function(o){ return (o.e ? o.e + ' ' : '') + f(o.p); }).join(' / ');
+  return nombreRep(x) + (x.nota ? ' (' + x.nota + ')' : '') + ': ' + pr;
+}
+function copiarTexto(t){
+  var listo = function(){ aviso('Copiado: ' + t); };
+  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(listo, function(){ copiarViejo(t); listo(); }); }
+  else { copiarViejo(t); listo(); }
+}
+function copiarViejo(t){ var a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', ''); a.style.cssText = 'position:fixed;top:-1000px;opacity:0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(a); }
+
 function nombreRep(x){ return x.tabla + ' — ' + x.modelo; }
 function linkWA(t){ return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(t); }
 function cambiar(id, d){
@@ -663,6 +683,7 @@ $('enviarPedido').addEventListener('click', function(){
 
 // ===== Eventos =====
 document.addEventListener('click', function(e){
+  var cp = e.target.closest('[data-copiar]'); if (cp) { var it = porId[cp.getAttribute('data-copiar')]; if (it) copiarTexto(textoCopia(it)); return; }
   var mas = e.target.closest('[data-mas]'); if (mas) { cambiar(mas.getAttribute('data-mas'), 1); return; }
   var menos = e.target.closest('[data-menos]'); if (menos) { cambiar(menos.getAttribute('data-menos'), -1); return; }
   var b = e.target.closest('[data-ir]'); if (b) { ir(b.getAttribute('data-ir')); }
