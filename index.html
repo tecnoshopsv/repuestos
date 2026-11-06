@@ -134,6 +134,16 @@
   .copiar{display:none;border:0;background:none;color:#9a9a9a;font-size:12px;font-weight:600;padding:6px 2px;margin-left:auto;cursor:pointer}
   body.cotizar .copiar{display:inline-flex;align-items:center;gap:4px}
   body.cotizar .copiar:active{color:var(--texto)}
+
+  .secciones{display:grid;grid-template-columns:1fr;gap:12px}
+  .seccion-btn{display:block;width:100%;border:0;border-radius:18px;padding:24px 18px;color:#fff;cursor:pointer;text-align:left;font:inherit;background:linear-gradient(145deg,#2A2A2A,#0A0A0A);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .seccion-btn:nth-child(2){background:linear-gradient(145deg,#3A3A3A,#1A1A1A)}
+  .seccion-btn .nom{display:block;font-size:26px;font-weight:800;letter-spacing:.5px}
+  .seccion-btn .desc{display:block;font-size:13px;opacity:.8;margin-top:4px}
+  .seccion-btn .uni{display:inline-block;margin-top:10px;background:var(--amarillo);color:#3a2a00;font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px}
+  .seccion-btn:active{transform:scale(.98)}
+  @media (min-width:700px){.secciones{grid-template-columns:repeat(3,1fr)}}
+  .seccion-wa{display:inline-block;background:#25D366;color:#fff;font-weight:700;text-decoration:none;border-radius:12px;padding:10px 16px}
 </style>
 </head>
 <body>
@@ -511,7 +521,7 @@ function chips(m){
 }
 function migas(pasos){
   // pasos: [[texto, hash], …]; el último es la pantalla actual
-  var h = '<div class="migas"><button data-ir="">Inicio</button>';
+  var h = '<div class="migas"><button data-ir="">Inicio</button> › <button data-ir="repuestos">Repuestos</button>';
   pasos.forEach(function(p, i){ h += ' › ' + (i < pasos.length - 1 ? '<button data-ir="' + esc(p[1]) + '">' + esc(p[0]) + '</button>' : esc(p[0])); });
   return h + '</div>';
 }
@@ -543,7 +553,11 @@ function pintar(){
   var r = vista.ruta, m = marcaPorSlug(r[0] || '');
   chips(m);
   if (vista.q) return pintarBusqueda(app);
-  if (!m) return pintarInicio(app);
+  if (!m) {
+    if (r[0] === 'repuestos') return pintarRepuestos(app);
+    if (r[0] === 'accesorios' || r[0] === 'herramientas') return pintarSeccion(app, r[0]);
+    return pintarInicio(app);
+  }
   if (r[1] === 'm') {
     var md = modeloPorSlug(m, r[2] || '');
     if (!md) return pintarModelos(app, m);
@@ -557,8 +571,28 @@ function pintar(){
   return pintarModelos(app, m);
 }
 function pintarInicio(app){
-  app.innerHTML = '<h2>¿Qué estás reparando?</h2><p class="sub">Elige la marca o categoría para ver repuestos y precios de mayoreo.</p>' +
+  var total = marcas.reduce(function(a, x){ return a + cuenta(x); }, 0);
+  var secs = [
+    { s: 'repuestos', n: 'REPUESTOS', d: 'Pantallas, baterías, flex y más', u: total + ' repuestos' },
+    { s: 'accesorios', n: 'ACCESORIOS', d: 'Cargadores, cables, fundas y más', u: 'Próximamente' },
+    { s: 'herramientas', n: 'HERRAMIENTAS', d: 'Todo para tu taller', u: 'Próximamente' }
+  ];
+  app.innerHTML = '<h2>¿Qué estás buscando?</h2><p class="sub">Elige una sección para ver productos y precios de mayoreo.</p>' +
+    '<div class="secciones">' + secs.map(function(x){ return '<button class="seccion-btn" data-ir="' + x.s + '"><span class="nom">' + x.n + '</span><span class="desc">' + x.d + '</span><span class="uni">' + x.u + '</span></button>'; }).join('') + '</div>' + info();
+}
+// Sección Repuestos → botones de marcas/categorías
+function pintarRepuestos(app){
+  app.innerHTML = '<div class="migas"><button data-ir="">Inicio</button> › Repuestos</div>' +
+    '<h2>¿Qué estás reparando?</h2><p class="sub">Elige la marca o categoría para ver repuestos y precios de mayoreo.</p>' +
     '<div class="marcas">' + marcas.map(function(x){ var n = cuenta(x); return '<button class="marca-btn" data-ir="' + x.s + '"><span class="nom">' + esc(x.n) + '</span><span class="uni">' + n + (n === 1 ? ' repuesto' : ' repuestos') + '</span></button>'; }).join('') + '</div>' + info();
+}
+// Secciones aún sin catálogo
+function pintarSeccion(app, s){
+  var nombre = s === 'accesorios' ? 'Accesorios' : 'Herramientas';
+  app.innerHTML = '<div class="migas"><button data-ir="">Inicio</button> › ' + nombre + '</div>' +
+    '<h2>' + nombre + '</h2><p class="sub">Precios de mayoreo para talleres.</p>' +
+    '<div class="vacio">Estamos preparando el catálogo de ' + nombre.toLowerCase() + '.<br>Mientras tanto, consúltanos por WhatsApp.<br><br>' +
+    '<a class="seccion-wa" href="' + linkWA('Hola, quiero consultar ' + nombre.toLowerCase() + ' para taller.') + '" target="_blank" rel="noopener">Consultar por WhatsApp</a></div>' + info();
 }
 // Marca → botones de modelos (agrupados por serie)
 function pintarModelos(app, m){
