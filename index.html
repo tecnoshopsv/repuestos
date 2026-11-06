@@ -137,7 +137,13 @@
 
   .secciones{display:grid;grid-template-columns:1fr;gap:12px}
   .seccion-btn{display:block;width:100%;border:0;border-radius:18px;padding:24px 18px;color:#fff;cursor:pointer;text-align:left;font:inherit;background:linear-gradient(145deg,#2A2A2A,#0A0A0A);box-shadow:0 2px 8px rgba(0,0,0,.12)}
-  .seccion-btn:nth-child(2){background:linear-gradient(145deg,#3A3A3A,#1A1A1A)}
+  .seccion-btn:nth-child(odd){background:linear-gradient(145deg,#2B2B2B,#0E0E0E);color:#fff}
+  .seccion-btn:nth-child(even){background:#fff;color:#111;border:1px solid #E2E2E2;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  /* Movimiento al pasar el cursor */
+  .seccion-btn,.marca-btn,.modelo-btn{transition:transform .2s ease,box-shadow .2s ease}
+  @media (hover:hover){
+    .seccion-btn:hover,.marca-btn:hover,.modelo-btn:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.18)}
+  }
   .seccion-btn .nom{display:block;font-size:26px;font-weight:800;letter-spacing:.5px}
   .seccion-btn .desc{display:block;font-size:13px;opacity:.8;margin-top:4px}
   .seccion-btn .uni{display:inline-block;margin-top:10px;background:var(--amarillo);color:#3a2a00;font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px}
