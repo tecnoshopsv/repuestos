@@ -139,6 +139,9 @@
   .seccion-btn{display:block;width:100%;border:0;border-radius:18px;padding:24px 18px;color:#fff;cursor:pointer;text-align:left;font:inherit;background:linear-gradient(145deg,#2A2A2A,#0A0A0A);box-shadow:0 2px 8px rgba(0,0,0,.12)}
   .seccion-btn:nth-child(odd){background:linear-gradient(145deg,#2B2B2B,#0E0E0E);color:#fff}
   .seccion-btn:nth-child(even){background:#fff;color:#111;border:1px solid #E2E2E2;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  .seccion-btn .ico{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:var(--amarillo);color:#111;margin-bottom:12px;transition:transform .2s ease}
+  .seccion-btn .ico svg{width:30px;height:30px}
+  @media (hover:hover){.seccion-btn:hover .ico{transform:rotate(-8deg) scale(1.08)}}
   /* Movimiento al pasar el cursor */
   .seccion-btn,.marca-btn,.modelo-btn{transition:transform .2s ease,box-shadow .2s ease}
   @media (hover:hover){
@@ -579,12 +582,12 @@ function pintar(){
 function pintarInicio(app){
   var total = marcas.reduce(function(a, x){ return a + cuenta(x); }, 0);
   var secs = [
-    { s: 'repuestos', n: 'REPUESTOS', d: 'Pantallas, baterías, flex y más', u: total + ' repuestos' },
-    { s: 'accesorios', n: 'ACCESORIOS', d: 'Cargadores, cables, fundas y más', u: 'Próximamente' },
-    { s: 'herramientas', n: 'HERRAMIENTAS', d: 'Todo para tu taller', u: 'Próximamente' }
+    { s: 'repuestos', n: 'REPUESTOS', d: 'Pantallas, baterías, flex y más', u: total + ' repuestos', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M9 6l3 3-2 2 3 3"/></svg>' },
+    { s: 'accesorios', n: 'ACCESORIOS', d: 'Cargadores, cables, fundas y más', u: 'Próximamente', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>' },
+    { s: 'herramientas', n: 'HERRAMIENTAS', d: 'Todo para tu taller', u: 'Próximamente', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.6 2.6l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.4-.4-2.4z"/></svg>' }
   ];
   app.innerHTML = '<h2>¿Qué estás buscando?</h2><p class="sub">Elige una sección para ver productos y precios de mayoreo.</p>' +
-    '<div class="secciones">' + secs.map(function(x){ return '<button class="seccion-btn" data-ir="' + x.s + '"><span class="nom">' + x.n + '</span><span class="desc">' + x.d + '</span><span class="uni">' + x.u + '</span></button>'; }).join('') + '</div>' + info();
+    '<div class="secciones">' + secs.map(function(x){ return '<button class="seccion-btn" data-ir="' + x.s + '"><span class="ico">' + x.i + '</span><span class="nom">' + x.n + '</span><span class="desc">' + x.d + '</span><span class="uni">' + x.u + '</span></button>'; }).join('') + '</div>' + info();
 }
 // Sección Repuestos → botones de marcas/categorías
 function pintarRepuestos(app){
