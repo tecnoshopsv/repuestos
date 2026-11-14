@@ -476,6 +476,10 @@ function calificador(titulo, tipoN, marcaN){
 
 // Datos: marcas = [{ n: marca, b: [{ t: tabla, p: [etiquetas de precio], i: [[modelo, [precios], nota, nuevo]] }] }]
 var marcas = [], items = [], porId = {};
+// Pestañas del catálogo que se muestran como sección propia en el inicio (no como marca de repuestos)
+var APARTE = ['herramientas', 'accesorios'];
+function esAparte(m){ return !!m && APARTE.indexOf(m.s) >= 0; }
+function marcasRep(){ return marcas.filter(function(m){ return !esAparte(m); }); }
 var vista = { ruta: [], q: '' };
 var pedido = leer(GUARDA_PED, {});   // id → cantidad
 
@@ -525,7 +529,7 @@ window.addEventListener('hashchange', function(){ vista.q = ''; $('q').value = '
 // ===== Pantallas =====
 function chips(m){
   var h = '<button class="chip' + (!m ? ' on' : '') + '" data-ir="">Inicio</button>';
-  marcas.forEach(function(x){ h += '<button class="chip' + (m === x ? ' on' : '') + '" data-ir="' + x.s + '">' + esc(x.n) + '</button>'; });
+  marcasRep().forEach(function(x){ h += '<button class="chip' + (m === x ? ' on' : '') + '" data-ir="' + x.s + '">' + esc(x.n) + '</button>'; });
   $('chips').innerHTML = h;
   var on = $('chips').querySelector('.on'); if (on && on.scrollIntoView && m) on.scrollIntoView({ block: 'nearest', inline: 'center' });
 }
@@ -546,7 +550,7 @@ function acciones(x){
   var n = pedido[x.id] || 0, acc = '';
   if (x.precio) acc = n ? '<span class="paso"><button data-menos="' + esc(x.id) + '" aria-label="Quitar uno">−</button><span>' + n + ' en pedido</span><button data-mas="' + esc(x.id) + '" aria-label="Agregar uno">+</button></span>'
                        : '<button class="btn btn-add" data-mas="' + esc(x.id) + '">+ Agregar</button>';
-  return acc + '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + linkWA('Hola, me interesa este repuesto: ' + nombreRep(x) + (x.precio ? ' — ' + dinero(x.precio) : '')) + '">Consultar</a>' +
+  return acc + '<a class="btn btn-wa" target="_blank" rel="noopener" href="' + linkWA('Hola, me interesa ' + (APARTE.indexOf(slug(x.marca)) >= 0 ? 'este producto' : 'este repuesto') + ': ' + nombreRep(x) + (x.precio ? ' — ' + dinero(x.precio) : '')) + '">Consultar</a>' +
     '<button class="copiar" type="button" data-copiar="' + esc(x.id) + '" title="Copiar modelo y precio">⧉ Copiar</button>';
 }
 function filaRep(x, conTabla, titulo, sub){
@@ -561,11 +565,11 @@ function pintar(){
   var app = $('app');
   if (!items.length) { chips(null); app.innerHTML = '<div class="vacio">Cargando catálogo…</div>'; return; }
   var r = vista.ruta, m = marcaPorSlug(r[0] || '');
+  if (APARTE.indexOf(r[0]) >= 0) { chips(null); if (vista.q) return pintarBusqueda(app); return pintarSeccion(app, r[0], r[1]); }
   chips(m);
   if (vista.q) return pintarBusqueda(app);
   if (!m) {
     if (r[0] === 'repuestos') return pintarRepuestos(app);
-    if (r[0] === 'accesorios' || r[0] === 'herramientas') return pintarSeccion(app, r[0]);
     return pintarInicio(app);
   }
   if (r[1] === 'm') {
@@ -581,11 +585,12 @@ function pintar(){
   return pintarModelos(app, m);
 }
 function pintarInicio(app){
-  var total = marcas.reduce(function(a, x){ return a + cuenta(x); }, 0);
+  var total = marcasRep().reduce(function(a, x){ return a + cuenta(x); }, 0);
+  var uni = function(s){ var m = marcaPorSlug(s), n = m ? cuenta(m) : 0; return n ? n + (n === 1 ? ' producto' : ' productos') : 'Próximamente'; };
   var secs = [
     { s: 'repuestos', n: 'REPUESTOS', d: 'Pantallas, baterías, flex y más', u: total + ' repuestos', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10.5 18.5h3"/><path d="M9 6l3 3-2 2 3 3"/></svg>' },
-    { s: 'accesorios', n: 'ACCESORIOS', d: 'Cargadores, cables, fundas y más', u: 'Próximamente', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>' },
-    { s: 'herramientas', n: 'HERRAMIENTAS', d: 'Todo para tu taller', u: 'Próximamente', i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.6 2.6l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.4-.4-2.4z"/></svg>' }
+    { s: 'accesorios', n: 'ACCESORIOS', d: 'Cargadores, cables, fundas y más', u: uni('accesorios'), i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>' },
+    { s: 'herramientas', n: 'HERRAMIENTAS', d: 'Todo para tu taller', u: uni('herramientas'), i: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.6 2.6l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.4-.4-2.4z"/></svg>' }
   ];
   app.innerHTML = '<h2>¿Qué estás buscando?</h2><p class="sub">Elige una sección para ver productos y precios de mayoreo.</p>' +
     '<div class="secciones">' + secs.map(function(x){ return '<button class="seccion-btn" data-ir="' + x.s + '"><span class="ico">' + x.i + '</span><span class="nom">' + x.n + '</span><span class="desc">' + x.d + '</span><span class="uni">' + x.u + '</span></button>'; }).join('') + '</div>' + info();
@@ -594,15 +599,29 @@ function pintarInicio(app){
 function pintarRepuestos(app){
   app.innerHTML = '<div class="migas"><button data-ir="">Inicio</button> › Repuestos</div>' +
     '<h2>¿Qué estás reparando?</h2><p class="sub">Elige la marca o categoría para ver repuestos y precios de mayoreo.</p>' +
-    '<div class="marcas">' + marcas.map(function(x){ var n = cuenta(x); return '<button class="marca-btn" data-ir="' + x.s + '"><span class="nom">' + esc(x.n) + '</span><span class="uni">' + n + (n === 1 ? ' repuesto' : ' repuestos') + '</span></button>'; }).join('') + '</div>' + info();
+    '<div class="marcas">' + marcasRep().map(function(x){ var n = cuenta(x); return '<button class="marca-btn" data-ir="' + x.s + '"><span class="nom">' + esc(x.n) + '</span><span class="uni">' + n + (n === 1 ? ' repuesto' : ' repuestos') + '</span></button>'; }).join('') + '</div>' + info();
 }
-// Secciones aún sin catálogo
-function pintarSeccion(app, s){
+// Secciones propias (Herramientas, Accesorios): salen de su pestaña en «Catálogo MAYOREO»
+function pintarSeccion(app, s, sub){
   var nombre = s === 'accesorios' ? 'Accesorios' : 'Herramientas';
-  app.innerHTML = '<div class="migas"><button data-ir="">Inicio</button> › ' + nombre + '</div>' +
-    '<h2>' + nombre + '</h2><p class="sub">Precios de mayoreo para talleres.</p>' +
-    '<div class="vacio">Estamos preparando el catálogo de ' + nombre.toLowerCase() + '.<br>Mientras tanto, consúltanos por WhatsApp.<br><br>' +
-    '<a class="seccion-wa" href="' + linkWA('Hola, quiero consultar ' + nombre.toLowerCase() + ' para taller.') + '" target="_blank" rel="noopener">Consultar por WhatsApp</a></div>' + info();
+  var m = marcaPorSlug(s), tablas = m ? m.b.filter(function(t){ return t.items.length; }) : [];
+  var cab = function(extra){ return '<div class="migas"><button data-ir="">Inicio</button> › ' + (extra ? '<button data-ir="' + s + '">' + nombre + '</button> › ' + esc(extra) : nombre) + '</div>'; };
+  if (!tablas.length) {
+    app.innerHTML = cab() + '<h2>' + nombre + '</h2><p class="sub">Precios de mayoreo para talleres.</p>' +
+      '<div class="vacio">Estamos preparando el catálogo de ' + nombre.toLowerCase() + '.<br>Mientras tanto, consúltanos por WhatsApp.<br><br>' +
+      '<a class="seccion-wa" href="' + linkWA('Hola, quiero consultar ' + nombre.toLowerCase() + ' para taller.') + '" target="_blank" rel="noopener">Consultar por WhatsApp</a></div>' + info();
+    return;
+  }
+  var t = sub ? tablaPorSlug(m, sub) : (tablas.length === 1 ? tablas[0] : null);
+  if (t) {
+    app.innerHTML = cab(tablas.length > 1 ? t.t : '') + (tablas.length > 1 ? regresar(s, 'Ver todas las categorías') : '') +
+      '<h2>' + esc(tablas.length > 1 ? t.t : nombre) + '</h2><p class="sub">' + t.items.length + (t.items.length === 1 ? ' producto' : ' productos') + ' · precios de mayoreo</p>' +
+      '<section class="grupo">' + t.items.map(function(x){ return filaRep(x, false); }).join('') + '</section>' + info();
+    return;
+  }
+  app.innerHTML = cab() + '<h2>' + nombre + '</h2><p class="sub">Elige la categoría.</p>' +
+    '<div class="tablas">' + tablas.map(function(x){ var nuevos = x.items.filter(function(i){ return i.nuevo; }).length;
+      return '<button class="tabla-btn" data-ir="' + s + '/' + x.s + '"><span class="ico">' + iconoTipo('otro') + '</span><div><b>' + esc(x.t) + '</b>' + (nuevos ? '<span class="nuevo">' + nuevos + ' NUEVO' + (nuevos === 1 ? '' : 'S') + '</span>' : '') + '<br><span>' + x.items.length + (x.items.length === 1 ? ' producto' : ' productos') + '</span></div><span class="flecha">›</span></button>'; }).join('') + '</div>' + info();
 }
 // Marca → botones de modelos (agrupados por serie)
 function pintarModelos(app, m){
