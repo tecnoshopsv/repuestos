@@ -153,6 +153,11 @@
   .seccion-btn .uni{display:inline-block;margin-top:10px;background:var(--amarillo);color:#3a2a00;font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px}
   .seccion-btn:active{transform:scale(.98)}
   @media (min-width:700px){.secciones{grid-template-columns:repeat(3,1fr)}}
+  .secciones.cats{grid-template-columns:1fr 1fr}
+  .secciones.cats .seccion-btn{padding:18px 14px}
+  .secciones.cats .nom{font-size:18px;letter-spacing:0;line-height:1.2}
+  .secciones.cats .ico{width:46px;height:46px}
+  @media (min-width:700px){.secciones.cats{grid-template-columns:repeat(2,1fr)}.secciones.cats .nom{font-size:21px}}
   .seccion-wa{display:inline-block;background:#25D366;color:#fff;font-weight:700;text-decoration:none;border-radius:12px;padding:10px 16px}
 </style>
 </head>
@@ -601,6 +606,21 @@ function pintarRepuestos(app){
     '<h2>¿Qué estás reparando?</h2><p class="sub">Elige la marca o categoría para ver repuestos y precios de mayoreo.</p>' +
     '<div class="marcas">' + marcasRep().map(function(x){ var n = cuenta(x); return '<button class="marca-btn" data-ir="' + x.s + '"><span class="nom">' + esc(x.n) + '</span><span class="uni">' + n + (n === 1 ? ' repuesto' : ' repuestos') + '</span></button>'; }).join('') + '</div>' + info();
 }
+// Ícono y descripción de cada categoría de Herramientas/Accesorios según su título en la hoja
+var SVG_A = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+var ICONOS_CAT = [
+  [/estacion|cautin|soldad|solder/, 'Cautines y estaciones para soldar', SVG_A + '<path d="M3 21l4.5-4.5"/><path d="M6.5 14.5l3 3"/><path d="M8 13l7.5-7.5a2.1 2.1 0 0 1 3 3L11 16"/><path d="M17 4l3-1-1 3"/></svg>'],
+  [/plancha|separador|calor/, 'Planchas para separar pantallas y tapas', SVG_A + '<rect x="3" y="14" width="18" height="5" rx="1.5"/><path d="M8 11c-1.2-1.5 1.2-2.5 0-4.5"/><path d="M12 11c-1.2-1.5 1.2-2.5 0-4.5"/><path d="M16 11c-1.2-1.5 1.2-2.5 0-4.5"/></svg>'],
+  [/fuente|poder|power/, 'Fuentes reguladas para diagnóstico', SVG_A + '<rect x="3" y="5" width="18" height="14" rx="2"/><rect x="6" y="8" width="7" height="4" rx="1"/><circle cx="17" cy="10" r="1.6"/><circle cx="8" cy="15.5" r="1"/><circle cx="12" cy="15.5" r="1"/><path d="M16 15.5h2"/></svg>'],
+  [/holder|soporte|base/, 'Soportes para pantallas, tapas y placas', SVG_A + '<path d="M4 19h16"/><path d="M6 19V9l3-3h6l3 3v10"/><rect x="9" y="10" width="6" height="5" rx="1"/></svg>'],
+  [/microscop|lupa/, 'Microscopios y lámparas', SVG_A + '<path d="M6 21h12"/><path d="M9 21v-3a5 5 0 0 1 8-4"/><path d="M10 4l4 4-3 3-4-4z"/><path d="M12 13l2 2"/></svg>'],
+  [/pinza|desarmador|destornillador|espatula|apertura/, 'Pinzas, desarmadores y apertura', SVG_A + '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.6 2.6l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.4-.4-2.4z"/></svg>']
+];
+function catInfo(titulo){
+  var t = norm(titulo);
+  for (var i = 0; i < ICONOS_CAT.length; i++) if (ICONOS_CAT[i][0].test(t)) return { d: ICONOS_CAT[i][1], i: ICONOS_CAT[i][2] };
+  return { d: 'Ver productos', i: ICONOS_CAT[ICONOS_CAT.length - 1][2] };
+}
 // Secciones propias (Herramientas, Accesorios): salen de su pestaña en «Catálogo MAYOREO»
 function pintarSeccion(app, s, sub){
   var nombre = s === 'accesorios' ? 'Accesorios' : 'Herramientas';
@@ -620,8 +640,8 @@ function pintarSeccion(app, s, sub){
     return;
   }
   app.innerHTML = cab() + '<h2>' + nombre + '</h2><p class="sub">Elige la categoría.</p>' +
-    '<div class="tablas">' + tablas.map(function(x){ var nuevos = x.items.filter(function(i){ return i.nuevo; }).length;
-      return '<button class="tabla-btn" data-ir="' + s + '/' + x.s + '"><span class="ico">' + iconoTipo('otro') + '</span><div><b>' + esc(x.t) + '</b>' + (nuevos ? '<span class="nuevo">' + nuevos + ' NUEVO' + (nuevos === 1 ? '' : 'S') + '</span>' : '') + '<br><span>' + x.items.length + (x.items.length === 1 ? ' producto' : ' productos') + '</span></div><span class="flecha">›</span></button>'; }).join('') + '</div>' + info();
+    '<div class="secciones cats">' + tablas.map(function(x){ var c = catInfo(x.t), n = x.items.length;
+      return '<button class="seccion-btn" data-ir="' + s + '/' + x.s + '"><span class="ico">' + c.i + '</span><span class="nom">' + esc(x.t) + '</span><span class="desc">' + c.d + '</span><span class="uni">' + n + (n === 1 ? ' producto' : ' productos') + '</span></button>'; }).join('') + '</div>' + info();
 }
 // Marca → botones de modelos (agrupados por serie)
 function pintarModelos(app, m){
