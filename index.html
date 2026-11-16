@@ -154,6 +154,10 @@
   .seccion-btn:active{transform:scale(.98)}
   @media (min-width:700px){.secciones{grid-template-columns:repeat(3,1fr)}}
   .secciones.cats{grid-template-columns:1fr 1fr}
+  .rep .t.con-foto{display:flex;align-items:center;gap:12px}
+  .rep .foto{flex:none;width:76px;height:76px;border-radius:12px;border:1px solid var(--linea);background:#fff;overflow:hidden;display:block}
+  .rep .foto img{width:100%;height:100%;object-fit:contain;display:block}
+  @media (min-width:700px){.rep .foto{width:96px;height:96px}}
   .secciones.cats .seccion-btn{padding:18px 14px}
   .secciones.cats .nom{font-size:18px;letter-spacing:0;line-height:1.2}
   .secciones.cats .ico{width:46px;height:46px}
@@ -561,7 +565,10 @@ function acciones(x){
 function filaRep(x, conTabla, titulo, sub){
   var multi = x.precios.filter(Boolean).length > 1;
   var detalle = sub != null ? sub : [conTabla ? x.tabla : '', x.nota].filter(Boolean).join(' · ');
-  return '<div class="rep"><div class="t">' + esc(titulo || x.modelo) + (x.nuevo ? '<span class="nuevo">NUEVO</span>' : '') + '</div>' +
+  // Herramientas/Accesorios: foto en img/<nombre-del-producto>.jpg (si no existe, no se muestra nada)
+  var foto = APARTE.indexOf(slug(x.marca)) >= 0 ? 'img/' + slug(x.modelo) + '.jpg' : '';
+  var nom = esc(titulo || x.modelo) + (x.nuevo ? '<span class="nuevo">NUEVO</span>' : '');
+  return '<div class="rep"><div class="t' + (foto ? ' con-foto' : '') + '">' + (foto ? '<a class="foto" href="' + foto + '" target="_blank" rel="noopener"><img src="' + foto + '" alt="' + esc(x.modelo) + '" loading="lazy" onerror="this.parentNode.remove()"></a><span>' + nom + '</span>' : nom) + '</div>' +
     '<div class="p"' + (multi ? ' style="font-size:14px"' : '') + '>' + precioHtml(x) + '</div>' +
     (detalle ? '<div class="o">' + esc(detalle) + '</div>' : '') +
     '<div class="acc">' + acciones(x) + '</div></div>';
